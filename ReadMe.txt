@@ -7,7 +7,7 @@ Persistence Type: SQL
 Persistence Location: Local
 Author: Ben Skinner
 Dated Created: 11/23/2017
-Last Modified: 12/1/2017
+Last Modified: 12/8/2017
 Instructions for use: 
 
 Once the application has been launched you can continue to the view movie information by clicking the "Main Menu" button.  To exit the application from this point click on the "Exit Application" button.

@@ -94,6 +94,7 @@
             // 
             // btnDeleteMovie
             // 
+            this.btnDeleteMovie.Enabled = false;
             this.btnDeleteMovie.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnDeleteMovie.Location = new System.Drawing.Point(117, 496);
             this.btnDeleteMovie.Name = "btnDeleteMovie";
@@ -130,6 +131,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(811, 578);
+            this.ControlBox = false;
             this.Controls.Add(this.lblMovieTitle);
             this.Controls.Add(this.pbMoviePoster);
             this.Controls.Add(this.btnMainMenu);

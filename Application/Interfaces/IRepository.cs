@@ -9,7 +9,7 @@ using System.Data.OleDb;
 
 namespace Application
 {
-    interface IRepository
+    interface IRepository : IDisposable
     {
         #region METHODS
 
@@ -22,7 +22,7 @@ namespace Application
         /// <summary>
         /// Method to handle the IDisposable interface contract
         /// </summary>
-        void Dispose();
+        //void Dispose();
 
         /// <summary>
         /// Returns a dataset containing GenreID's and Genre Titles from the database.
@@ -61,7 +61,7 @@ namespace Application
         /// <param name="ratingID"></param>
         /// <param name="movieID"></param>
         /// <param name="reviewText"></param>
-        void AddReview(int ratingID, int movieID, string reviewText);
+        void AddRating(int ratingID, int movieID, string reviewText);
 
         /// <summary>
         /// Updates the information for an existing movie in the database.

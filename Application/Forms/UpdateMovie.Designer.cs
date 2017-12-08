@@ -54,7 +54,7 @@
             this.btnMainMenu.Location = new System.Drawing.Point(543, 473);
             this.btnMainMenu.Name = "btnMainMenu";
             this.btnMainMenu.Size = new System.Drawing.Size(169, 47);
-            this.btnMainMenu.TabIndex = 42;
+            this.btnMainMenu.TabIndex = 7;
             this.btnMainMenu.Text = "Main Menu";
             this.btnMainMenu.UseVisualStyleBackColor = true;
             this.btnMainMenu.Click += new System.EventHandler(this.btnMainMenu_Click);
@@ -65,18 +65,19 @@
             this.btnResetForm.Location = new System.Drawing.Point(346, 473);
             this.btnResetForm.Name = "btnResetForm";
             this.btnResetForm.Size = new System.Drawing.Size(169, 47);
-            this.btnResetForm.TabIndex = 41;
+            this.btnResetForm.TabIndex = 6;
             this.btnResetForm.Text = "Reset Form";
             this.btnResetForm.UseVisualStyleBackColor = true;
             this.btnResetForm.Click += new System.EventHandler(this.btnResetForm_Click);
             // 
             // btnUpdateMovie
             // 
+            this.btnUpdateMovie.Enabled = false;
             this.btnUpdateMovie.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnUpdateMovie.Location = new System.Drawing.Point(149, 473);
             this.btnUpdateMovie.Name = "btnUpdateMovie";
             this.btnUpdateMovie.Size = new System.Drawing.Size(169, 47);
-            this.btnUpdateMovie.TabIndex = 40;
+            this.btnUpdateMovie.TabIndex = 5;
             this.btnUpdateMovie.Text = "Update Movie";
             this.btnUpdateMovie.UseVisualStyleBackColor = true;
             this.btnUpdateMovie.Click += new System.EventHandler(this.btnUpdateMovie_Click);
@@ -86,7 +87,7 @@
             this.btnChoosePoster.Location = new System.Drawing.Point(606, 407);
             this.btnChoosePoster.Name = "btnChoosePoster";
             this.btnChoosePoster.Size = new System.Drawing.Size(129, 30);
-            this.btnChoosePoster.TabIndex = 39;
+            this.btnChoosePoster.TabIndex = 4;
             this.btnChoosePoster.Text = "Choose Image";
             this.btnChoosePoster.UseVisualStyleBackColor = true;
             this.btnChoosePoster.Click += new System.EventHandler(this.btnChoosePoster_Click);
@@ -97,14 +98,14 @@
             this.txtMovieSynopsis.Multiline = true;
             this.txtMovieSynopsis.Name = "txtMovieSynopsis";
             this.txtMovieSynopsis.Size = new System.Drawing.Size(310, 144);
-            this.txtMovieSynopsis.TabIndex = 36;
+            this.txtMovieSynopsis.TabIndex = 1;
             // 
             // txtMovieTitle
             // 
             this.txtMovieTitle.Location = new System.Drawing.Point(581, 125);
             this.txtMovieTitle.Name = "txtMovieTitle";
             this.txtMovieTitle.Size = new System.Drawing.Size(214, 20);
-            this.txtMovieTitle.TabIndex = 35;
+            this.txtMovieTitle.TabIndex = 0;
             // 
             // label7
             // 
@@ -181,6 +182,7 @@
             // cmbGenre
             // 
             this.cmbGenre.FormattingEnabled = true;
+            this.cmbGenre.ItemHeight = 13;
             this.cmbGenre.Location = new System.Drawing.Point(571, 369);
             this.cmbGenre.Name = "cmbGenre";
             this.cmbGenre.Size = new System.Drawing.Size(219, 21);
@@ -193,7 +195,7 @@
             this.dtpReleaseDate.Location = new System.Drawing.Point(571, 341);
             this.dtpReleaseDate.Name = "dtpReleaseDate";
             this.dtpReleaseDate.Size = new System.Drawing.Size(220, 20);
-            this.dtpReleaseDate.TabIndex = 44;
+            this.dtpReleaseDate.TabIndex = 2;
             // 
             // label2
             // 
@@ -219,6 +221,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(861, 549);
+            this.ControlBox = false;
             this.Controls.Add(this.label2);
             this.Controls.Add(this.lstMovieList);
             this.Controls.Add(this.dtpReleaseDate);

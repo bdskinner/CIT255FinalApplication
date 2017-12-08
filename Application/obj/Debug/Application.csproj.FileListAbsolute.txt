@@ -16,3 +16,22 @@ C:\Users\Ben\Documents\CIT 255\Projects\CIT255FinalApplication\Application\obj\D
 C:\Users\Ben\Documents\CIT 255\Projects\CIT255FinalApplication\Application\bin\Debug\Images\ComingSoon.jpg
 C:\Users\Ben\Documents\CIT 255\Projects\CIT255FinalApplication\Application\bin\Debug\Data\Limelight.accdb
 C:\Users\Ben\Documents\CIT 255\Projects\CIT255FinalApplication\Application\obj\Debug\Application.ClosingScreen.resources
+C:\Users\skinneb\Desktop\CIT255FinalApplication\Application\bin\Debug\Data\Limelight.accdb
+C:\Users\skinneb\Desktop\CIT255FinalApplication\Application\bin\Debug\Images\ComingSoon.jpg
+C:\Users\skinneb\Desktop\CIT255FinalApplication\Application\bin\Debug\Application.exe.config
+C:\Users\skinneb\Desktop\CIT255FinalApplication\Application\bin\Debug\Application.exe
+C:\Users\skinneb\Desktop\CIT255FinalApplication\Application\bin\Debug\Application.pdb
+C:\Users\skinneb\Desktop\CIT255FinalApplication\Application\obj\Debug\Application.csprojResolveAssemblyReference.cache
+C:\Users\skinneb\Desktop\CIT255FinalApplication\Application\obj\Debug\Application.AddMovie.resources
+C:\Users\skinneb\Desktop\CIT255FinalApplication\Application\obj\Debug\Application.ClosingScreen.resources
+C:\Users\skinneb\Desktop\CIT255FinalApplication\Application\obj\Debug\Application.DeleteMovie.resources
+C:\Users\skinneb\Desktop\CIT255FinalApplication\Application\obj\Debug\Application.MainMenu.resources
+C:\Users\skinneb\Desktop\CIT255FinalApplication\Application\obj\Debug\Application.Properties.Resources.resources
+C:\Users\skinneb\Desktop\CIT255FinalApplication\Application\obj\Debug\Application.Search.resources
+C:\Users\skinneb\Desktop\CIT255FinalApplication\Application\obj\Debug\Application.SplashScreen.resources
+C:\Users\skinneb\Desktop\CIT255FinalApplication\Application\obj\Debug\Application.UpdateMovie.resources
+C:\Users\skinneb\Desktop\CIT255FinalApplication\Application\obj\Debug\Application.ViewRecords.resources
+C:\Users\skinneb\Desktop\CIT255FinalApplication\Application\obj\Debug\Application.csproj.GenerateResource.Cache
+C:\Users\skinneb\Desktop\CIT255FinalApplication\Application\obj\Debug\Application.csproj.CoreCompileInputs.cache
+C:\Users\skinneb\Desktop\CIT255FinalApplication\Application\obj\Debug\Application.exe
+C:\Users\skinneb\Desktop\CIT255FinalApplication\Application\obj\Debug\Application.pdb

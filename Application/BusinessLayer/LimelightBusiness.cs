@@ -42,7 +42,7 @@ namespace Application
             try
             {
                 //Check data to make sure it is valid.
-                ValidMovieInformation(newMovie);
+                ValidateMovieInformation(newMovie);
 
                 //Save the movie information to the data source.
                 _repository.AddMovie(newMovie, moviePoster);
@@ -58,10 +58,21 @@ namespace Application
         /// </summary>
         /// <param name="ratingID"></param>
         /// <param name="movieID"></param>
-        /// <param name="reviewText"></param>
-        public void AddReview(int ratingID, int movieID, string reviewText)
+        /// <param name="comment"></param>
+        public void AddRating(int ratingID, int movieID, string comment)
         {
-            _repository.AddReview(ratingID, movieID, reviewText);
+            try
+            {
+                //Validate the rating information.
+                ValidateRatingInformation(ratingID, comment);
+
+                //Add the rating to the database.
+                _repository.AddRating(ratingID, movieID, comment);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         /// <summary>
@@ -70,7 +81,14 @@ namespace Application
         /// <param name="ID"></param>
         public void DeleteMovie(int ID)
         {
-            _repository.DeleteMovie(ID);
+            try
+            {
+                _repository.DeleteMovie(ID);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         /// <summary>
@@ -87,7 +105,14 @@ namespace Application
         /// <returns></returns>
         public DataSet GetAllGenreTitles()
         {
-            return _repository.GetAllGenreTitles();
+            try
+            {
+                return _repository.GetAllGenreTitles();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         /// <summary>
@@ -96,7 +121,14 @@ namespace Application
         /// <returns></returns>
         public List<Movie> GetAllMovies()
         {
-            return _repository.GetAllMovies();
+            try
+            {
+                return _repository.GetAllMovies();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         /// <summary>
@@ -105,7 +137,14 @@ namespace Application
         /// <returns></returns>
         public DataSet GetAllMovieTitles()
         {
-            return _repository.GetAllMovieTitles();
+            try
+            {
+                return _repository.GetAllMovieTitles();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         /// <summary>
@@ -114,7 +153,14 @@ namespace Application
         /// <returns></returns>
         public DataSet GetAllRatingTitles()
         {
-            return _repository.GetAllRatingTitles();
+            try
+            {
+                return _repository.GetAllRatingTitles();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         /// <summary>
@@ -124,13 +170,24 @@ namespace Application
         /// <param name="moviePoster"></param>
         public void UpdateMovie(Movie newMovie, byte[] moviePoster)
         {
-            _repository.UpdateMovie(newMovie, moviePoster);
+            try
+            {
+                //Validate the updated movie information.
+                ValidateMovieInformation(newMovie);
+
+                //Update the movie information in the database.
+                _repository.UpdateMovie(newMovie, moviePoster);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         /// <summary>
         /// Checks the movie information being added or updated for valid data.
         /// </summary>
-        private void ValidMovieInformation(Movie movie)
+        private void ValidateMovieInformation(Movie movie)
         {
             //Movie Title.
             if (movie.Title == "")
@@ -159,12 +216,70 @@ namespace Application
             {
                 throw new ArgumentException("Please select the genre for the movie.");
             }
+        }
+        
+        /// <summary>
+        /// Checks the rating title to make sure it is valid.
+        /// </summary>
+        public void ValidateRatingInformation(int ratingID, string comment)
+        {
+            //Check the rating selected for a valid value.
+            if (ratingID == 0)
+            {
+                throw new ArgumentException("A rating must be chosen from the list provided.");
+            }
 
-            //Movie Genre Title.
-            //if (movie.GenreTitle == "" || movie.GenreTitle == "" || movie.GenreTitle.ToLower() == "select a genre")
-            //{
-            //    throw new ArgumentException();
-            //}
+            //If a comment was entered validate the data entered.
+            if (comment != "")
+            {
+                if (comment.Contains("'"))
+                {
+                    throw new ArgumentException("Apostrophes cannot be used in the in the text of the comment.");
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Checks the start and end date to make sure that they are valid.
+        /// </summary>
+        public void ValidateSearchDates(DateTime fromDate, DateTime toDate)
+        {
+            if (fromDate > toDate)
+            {
+                throw new ArgumentException("The search from date must occur before the search to date.");
+            }
+        }
+
+        /// <summary>
+        /// Checks the genre title to make sure it is valid.
+        /// </summary>
+        public void ValidateSearchGenre(string genreTitle)
+        {
+            switch (genreTitle)
+            {
+                case "":
+                case "Select A Genre":
+                    throw new ArgumentException("A genre must be chosen to use the genre as a search criteria.");
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Checks the movie title being searched forto make sure it contains valid data.
+        /// </summary>
+        public void ValidateSearchTitle(string movieTitle)
+        {
+            if (movieTitle == "")
+            {
+                throw new ArgumentException("To search by movie title a movie title must be provided.");
+            }
+
+            if (movieTitle.Contains("'"))
+            {
+                throw new ArgumentException("Apostrophes cannot be used in the movie's title.");
+            }
         }
 
         #endregion

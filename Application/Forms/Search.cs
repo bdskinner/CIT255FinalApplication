@@ -17,6 +17,7 @@ namespace Application
 
         List<Movie> movies;
         IRepository repository = new AccessRepository();
+        string sortByFields = "";
 
         #endregion
 
@@ -44,7 +45,67 @@ namespace Application
 
         private void btnSearchMovie_Click(object sender, EventArgs e)
         {
-            xxx();
+            //Variable Declarations.
+            LimelightBusiness business = new LimelightBusiness(repository);
+            List<Movie> results = new List<Movie>();
+
+            //Validate the title if it is being used as a search criteria.
+            if (chkSearchTitle.Checked == true)
+            {
+                try
+                {
+                    business.ValidateSearchTitle(txtSearchTitle.Text);
+                }
+                catch (Exception ex)
+                {
+                    //Handle an exceptions thrown.
+                    ApplicationUtilities.CatchExceptions(ex);
+                    return;
+                }
+            }
+
+            //Validate the release date range if it is being used as a search criteria.
+            if (chkSearchReleaseDate.Checked == true)
+            {
+                try
+                {
+                    business.ValidateSearchDates(dtpSearchDateFrom.Value, dtpSearchDateTo.Value);
+                }
+                catch (Exception ex)
+                {
+                    //Handle an exceptions thrown.
+                    ApplicationUtilities.CatchExceptions(ex);
+                    return;
+                }
+            }
+
+            //Validate the release date range if it is being used as a search criteria.
+            if (chkSearchGenre.Checked == true)
+            {
+                try
+                {
+                    business.ValidateSearchGenre(cmbGenre.Text);
+                }
+                catch (Exception ex)
+                {
+                    //Handle an exceptions thrown.
+                    ApplicationUtilities.CatchExceptions(ex);
+                    return;
+                }
+            }
+
+            //Search for the movies.
+            //xxx();
+
+            //Search for the movies with that match the entered criteria.
+            results = SortMovies(SearchForMovies());
+
+            //Add the movie titles from the search result to the movie list box.
+            lstMovieList.Items.Clear();
+            foreach (Movie movie in results)
+            {
+                lstMovieList.Items.Add(movie.Title);
+            }
         }
 
         private void chkSearchGenre_CheckedChanged(object sender, EventArgs e)
@@ -57,18 +118,6 @@ namespace Application
             {
                 cmbGenre.SelectedIndex = 0;
                 cmbGenre.Enabled = false;
-            }
-        }
-
-        private void chkSearchRating_CheckedChanged(object sender, EventArgs e)
-        {
-            if (chkSearchRating.Checked == true)
-            {
-                cmbRating.Enabled = true;
-            }
-            else
-            {
-                cmbRating.Enabled = false;
             }
         }
 
@@ -102,28 +151,74 @@ namespace Application
             }
         }
 
+        private void chkSortGenre_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkSortGenre.Checked == true)
+            {
+                if (sortByFields == "")
+                {
+                    sortByFields = "Genre";
+                }
+                else
+                {
+                    if (sortByFields.Substring(0, 5) == "Title")
+                    {
+                        sortByFields = sortByFields.Insert(5, "Genre");
+                    }
+                    else
+                    {
+                        sortByFields = "Genre" + sortByFields;
+                    }
+                }
+            }
+            else
+            {
+                sortByFields = sortByFields.Replace("Genre", "");
+            }
+        }
+
+        private void chkSortReleaseDate_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkSortReleaseDate.Checked == true)
+            {
+                sortByFields = sortByFields + "ReleaseDate";
+            }
+            else
+            {
+                sortByFields = sortByFields.Replace("ReleaseDate", "");
+            }
+        }
+
+        private void chkSortTitle_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkSortTitle.Checked == true)
+            {
+                sortByFields = "Title" + sortByFields;
+            }
+            else
+            {
+                sortByFields = sortByFields.Replace("Title", "");
+            }
+        }
+
         private void Search_Load(object sender, EventArgs e)
         {
             //Variable Declarations.
-            //AccessRepository repository = new AccessRepository();
             LimelightBusiness business = new LimelightBusiness(repository);
 
             //Fill the list of movies and reviews.
-            //using (repository)
-            //{
-            //    movies = repository.GetAllMovies();
-            //}
-            movies = business.GetAllMovies();
-
-            //Fill the movie titles listbox.
-            //FillMovieList();
-            //lstMovieList.SelectedIndex = -1;
+            try
+            {
+                movies = business.GetAllMovies();
+            }
+            catch (Exception ex)
+            {
+                ApplicationUtilities.CatchExceptions(ex);
+                return;
+            }
 
             //Fill the genres combobox.
             FillGenreList();
-
-            //Fill the ratings combobox.
-            FillRatingsList();
 
             //Clear the controls on the form.
             ResetForm();
@@ -140,16 +235,19 @@ namespace Application
         {
             //Variable Declarations.
             DataSet movieGenres;
-            // AccessRepository repository = new AccessRepository();
             LimelightBusiness business = new LimelightBusiness(repository);
 
             //Get the genre titles from the database.
-            //using (repository)
-            //{
-            //    movieGenres = repository.GetAllGenreTitles();
-            //}
-            movieGenres = business.GetAllGenreTitles();
-
+            try
+            {
+                movieGenres = business.GetAllGenreTitles();
+            }
+            catch (Exception ex)
+            {
+                ApplicationUtilities.CatchExceptions(ex);
+                return;
+            }
+            
             //Add the genre titles to the genre combobox.
             DataRow emptyDataRow = movieGenres.Tables[0].NewRow();
             emptyDataRow[0] = 0;
@@ -159,56 +257,6 @@ namespace Application
             cmbGenre.DataSource = movieGenres.Tables[0];
             cmbGenre.ValueMember = "GenreID";
             cmbGenre.DisplayMember = "GenreTitle";
-        }
-
-        /// <summary>
-        /// Displays the current list of movies in the movie listbox.
-        /// </summary>
-        private void FillMovieList()
-        {
-            //Variable Declarations.
-            DataSet movieTitles;
-            //AccessRepository repository = new AccessRepository();
-            LimelightBusiness business = new LimelightBusiness(repository);
-
-            //Get the movie titles from the database.
-            //using (repository)
-            //{
-            //    movieTitles = repository.GetAllMovieTitles();
-            //}
-            movieTitles = business.GetAllMovieTitles();
-            
-            lstMovieList.DataSource = movieTitles.Tables[0];
-            lstMovieList.ValueMember = "MovieID";
-            lstMovieList.DisplayMember = "Title";
-        }
-
-        /// <summary>
-        /// Fills the ratings combobox with the various rating levels.
-        /// </summary>
-        private void FillRatingsList()
-        {
-            //Variable Declarations.
-            DataSet movieRatings;
-            //AccessRepository repository = new AccessRepository();
-            LimelightBusiness business = new LimelightBusiness(repository);
-
-            //Get the movie titles from the database.
-            //using (repository)
-            //{
-            //    movieRatings = repository.GetAllRatingTitles();
-            //}
-            movieRatings = business.GetAllRatingTitles();
-
-            //Add the genre titles to the ratings combobox.
-            DataRow emptyDataRow = movieRatings.Tables[0].NewRow();
-            emptyDataRow[0] = 0;
-            emptyDataRow[1] = "Select A Rating";
-            movieRatings.Tables[0].Rows.InsertAt(emptyDataRow, 0);
-
-            cmbRating.DataSource = movieRatings.Tables[0];
-            cmbRating.ValueMember = "RatingID";
-            cmbRating.DisplayMember = "RatingTitle";
         }
 
         /// <summary>
@@ -225,9 +273,7 @@ namespace Application
             chkSearchTitle.Checked = false;
             chkSearchReleaseDate.Checked = false;
             chkSearchGenre.Checked = false;
-            chkSearchRating.Checked = false;
             cmbGenre.SelectedIndex = 0;
-            cmbRating.SelectedIndex = 0;
 
             txtSearchTitle.Text = "";
             dtpSearchDateFrom.Value = DateTime.Now;
@@ -237,17 +283,13 @@ namespace Application
             chkSortTitle.Checked = false;
             chkSortReleaseDate.Checked = false;
             chkSortGenre.Checked = false;
-            chkSortRating.Checked = false;
         }
 
-
-
-
-
-
-
-
-        private void xxx()
+        /// <summary>
+        /// Returns a list of movies that match the criteria selected by the user.
+        /// </summary>
+        /// <returns>List of Movies: Movies that match the criteria selected by the user.</returns>
+        private List<Movie> SearchForMovies()
         {
             //Variable Declarations.
             List<Movie> results = movies;
@@ -257,19 +299,11 @@ namespace Application
             {
                 //If the movie title is used as a search criteria...
 
-                //Check for valid search data.
-                if (txtSearchTitle.Text =="")
-                {
-                    MessageBox.Show("A value must be entered to use the title as a search criteria.");
-                    txtSearchTitle.Focus();
-                    return;
-                }
-
                 //Query the list of available movies.
                 var query = from x in results
-                    where x.Title.ToLower().Contains(txtSearchTitle.Text.ToLower())
-                    select x;
-                
+                            where x.Title.ToLower().Contains(txtSearchTitle.Text.ToLower())
+                            select x;
+
                 //Save the results of the query.
                 results = query.ToList<Movie>();
             }
@@ -279,20 +313,12 @@ namespace Application
             {
                 //If the movie's release date is used as a search criteria...
 
-                //Check for valid search data.
-                if (dtpSearchDateTo.Value < dtpSearchDateFrom.Value)
-                {
-                    MessageBox.Show("The search from date must occur before the search to date.");
-                    dtpSearchDateFrom.Focus();
-                    return;
-                }
-
                 //Query the list of available movies.
                 var query = from x in results
-                    where 
-                        x.ReleaseDate >= dtpSearchDateFrom.Value &&
-                        x.ReleaseDate <= dtpSearchDateTo.Value
-                   select x;
+                            where
+                                x.ReleaseDate >= dtpSearchDateFrom.Value &&
+                                x.ReleaseDate <= dtpSearchDateTo.Value
+                            select x;
 
                 //Save the results of the query.
                 results = query.ToList<Movie>();
@@ -303,14 +329,6 @@ namespace Application
             {
                 //If the movie genre is used as a search criteria...
 
-                //Check for valid search data.
-                if (cmbGenre.SelectedIndex == 0)
-                {
-                    MessageBox.Show("A genre must be chosen to use the genre as a search criteria.");
-                    cmbGenre.Focus();
-                    return;
-                }
-
                 //Query the list of available movies.
                 var query = from x in results
                             where x.GenreTitle == cmbGenre.Text
@@ -320,129 +338,82 @@ namespace Application
                 results = query.ToList<Movie>();
             }
 
-
-
-
-
-
-
-
-
-            //Sort the results.
-            if (chkSortTitle.Checked == true)
-            {
-                if (chkSortReleaseDate.Checked == true)
-                {
-                    if (chkSortGenre.Checked == true)
-                    {
-                        //Sort by Title, Release Date, and Genre.
-                        var query = from x in results
-                                    orderby
-                                        x.Title,
-                                        x.ReleaseDate,
-                                        x.GenreTitle ascending
-                                    select x;
-
-                        //Save the results of the query.
-                        results = query.ToList<Movie>();
-                    }
-                    else
-                    {
-                        //Sort by Title and Release Date.
-                        var query = from x in results
-                                    orderby
-                                        x.Title,
-                                        x.ReleaseDate ascending
-                                    select x;
-
-                        //Save the results of the query.
-                        results = query.ToList<Movie>();
-                    }
-                }
-                else
-                {
-                    if (chkSortGenre.Checked == true)
-                    {
-                        //Sort by Title and Genre.
-                        var query = from x in results
-                                    orderby
-                                        x.Title,
-                                        x.GenreTitle ascending
-                                    select x;
-
-                        //Save the results of the query.
-                        results = query.ToList<Movie>();
-                    }
-                    else
-                    {
-                        //Sort by Title.
-                        var query = from x in results
-                                    orderby x.Title ascending
-                                    select x;
-
-                        //Save the results of the query.
-                        results = query.ToList<Movie>();
-                    }
-                }
-            }
-
-            if (chkSortReleaseDate.Checked == true)
-            {
-                if (chkSortGenre.Checked == true)
-                {
-                    //Sort by Title, Release Date, and Genre.
-                    var query = from x in results
-                                orderby
-                                    x.ReleaseDate,
-                                    x.GenreTitle ascending
-                                select x;
-
-                    //Save the results of the query.
-                    results = query.ToList<Movie>();
-                }
-                else
-                {
-                    //Sort by Title and Release Date.
-                    var query = from x in results
-                                orderby
-                                    x.ReleaseDate ascending
-                                select x;
-
-                    //Save the results of the query.
-                    results = query.ToList<Movie>();
-                }
-            }
-
-            if (chkSortGenre.Checked == true)
-            {
-                //Sort by Title, Release Date, and Genre.
-                var query = from x in results
-                            orderby
-                                x.GenreTitle ascending
-                            select x;
-
-                //Save the results of the query.
-                results = query.ToList<Movie>();
-            }
-
-
-
-
-
-            //results2 = results.OrderBy(x => x.Title).ThenBy(x => x.GenreTitle);
-
-
-
-
-
-            //Add the movie titles from the search result to the movie list box.
-            lstMovieList.Items.Clear();
-            foreach (Movie movie in results)
-            {
-                lstMovieList.Items.Add(movie.Title);
-            }
+            //Return the search results.
+            return results;
         }
 
+        /// <summary>
+        /// Returns a list of movies from the search that have been sorted by the criteria selected by the user.
+        /// </summary>
+        /// <param name="results"></param>
+        /// <returns>List of Movies: Movies search results sorted by the criteria selected by the user..</returns>
+        private List<Movie> SortMovies(List<Movie> results)
+        {
+            //Sort the results of the search.
+            switch (sortByFields)
+            {
+                case "Title":
+                    var query = from x in results
+                                orderby x.Title ascending
+                                select x;
+                    results = query.ToList<Movie>();
+                    break;
+                case "ReleaseDate":
+                    var query2 = from x in results
+                                 orderby x.ReleaseDate ascending
+                                 select x;
+                    results = query2.ToList<Movie>();
+                    break;
+                case "Genre":
+                    var query3 = from x in results
+                                 orderby
+                                     x.GenreTitle ascending
+                                 select x;
+                    results = query3.ToList<Movie>();
+                    break;
+
+                case "TitleReleaseDate":
+                    var query4 = from x in results
+                                 orderby
+                                     x.Title,
+                                     x.ReleaseDate ascending
+                                 select x;
+                    results = query4.ToList<Movie>();
+                    break;
+                case "TitleGenre":
+                    var query5 = from x in results
+                                 orderby
+                                     x.GenreTitle,
+                                     x.Title ascending
+                                 select x;
+                    results = query5.ToList<Movie>();
+                    break;
+
+                case "GenreReleaseDate":
+                    var query6 = from x in results
+                                 orderby
+                                     x.GenreTitle,
+                                     x.ReleaseDate ascending
+                                 select x;
+                    results = query6.ToList<Movie>();
+                    break;
+                case "TitleGenreReleaseDate":
+                    var query7 = from x in results
+                                 orderby
+                                     x.GenreTitle,
+                                     x.Title,
+                                     x.ReleaseDate ascending
+                                 select x;
+                    results = query7.ToList<Movie>();
+                    break;
+                default:
+                    break;
+            }
+
+            //Return the sorted search results.
+            return results;
+        }
+        
         #endregion
     }
 }

@@ -41,20 +41,18 @@ namespace Application
         {
             //Code Found at Site: Stack overflow
             //URL: https://stackoverflow.com/questions/15273617/c-sharp-insert-picture-into-ms-access
-
-
+            
             //Variable Declarations.
             OleDbConnection dbConnection;
             dbConnection = ConnectToDatabase();
             
-            // You've got the filename from the result of your OpenDialog operation
-            //var pic = File.ReadAllBytes(yourFileName);
+            //Setup the database command object to insert the image.
             OleDbCommand cmd = new OleDbCommand("INSERT INTO MoviePosters (MovieID, MoviePoster) VALUES (@p1, @p2)", dbConnection);
             cmd.CommandType = CommandType.Text;
-            //cmd.CommandText = "INSERT INTO MoviePosters (MovieID, MoviePoster) VALUES (@p1, @p2)";
             cmd.Parameters.AddWithValue("@p1", movieID);
             cmd.Parameters.AddWithValue("@p2", Image);
             
+            //Execute the sql statement.
             cmd.Connection.Open();
             cmd.ExecuteNonQuery();
             cmd.Connection.Close();
@@ -84,10 +82,14 @@ namespace Application
         /// <param name="ratingID"></param>
         /// <param name="movieID"></param>
         /// <param name="reviewText"></param>
-        public void AddReview(int ratingID, int movieID, string reviewText)
+        public void AddRating(int ratingID, int movieID, string reviewText)
         {
             //Insert the new review into the MovieReviews table.
             ExecuteSQL($"INSERT INTO MovieReviews ( ReviewText, RatingID, MovieID ) VALUES ( '{reviewText}', {ratingID}, {movieID});");
+
+            //Refresh the list of movies.
+            _reviews = ReadAllReviews();
+            _movies = ReadAllMovies();
         }
 
         /// <summary>
@@ -113,12 +115,19 @@ namespace Application
             //Variable Declarations.
             string sqlStatement = $"DELETE FROM MovieInformation WHERE MovieID = {movieID};";
 
-            //Delete the movie information from the MovieInformation table.
-            ExecuteSQL(sqlStatement);
+            try
+            {
+                //Delete the movie information from the MovieInformation table.
+                ExecuteSQL(sqlStatement);
 
-            //Delete the movie's poster image from the MoviePosters table.
-            sqlStatement = $"DELETE FROM MoviePosters WHERE MovieID = {movieID};";
-            ExecuteSQL(sqlStatement);
+                //Delete the movie's poster image from the MoviePosters table.
+                sqlStatement = $"DELETE FROM MoviePosters WHERE MovieID = {movieID};";
+                ExecuteSQL(sqlStatement);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         /// <summary>
@@ -204,9 +213,16 @@ namespace Application
             //Variable Declarations.
             DataSet genreTitles = new DataSet();
 
-            //Get all movie titles in the database.
-            genreTitles = GetSQLResults("SELECT GenreID, GenreTitle FROM Genres ORDER BY GenreTitle;");
-
+            try
+            {
+                //Get all movie titles in the database.
+                genreTitles = GetSQLResults("SELECT GenreID, GenreTitle FROM Genres ORDER BY GenreTitle;");
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            
             //Return the results.
             return genreTitles;
         }
@@ -246,9 +262,16 @@ namespace Application
             //Variable Declarations.
             DataSet ratingTitles = new DataSet();
 
-            //Get all movie titles in the database.
-            ratingTitles = GetSQLResults("SELECT RatingID, RatingTitle FROM Ratings ORDER BY RatingID DESC;");
-
+            try
+            {
+                //Get all movie titles in the database.
+                ratingTitles = GetSQLResults("SELECT RatingID, RatingTitle FROM Ratings ORDER BY RatingID DESC;");
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            
             //Return the results.
             return ratingTitles;
         }
@@ -366,7 +389,6 @@ namespace Application
                 Movie newMovie = new Movie();
 
                 //Save the movie information to the new movie object.
-                //newMovie.MovieID = moviesDS.Tables[0].Columns["MovieID"];
                 newMovie.MovieID = movie.Field<int>("MovieID");
                 newMovie.Title = movie.Field<string>("Title");
                 newMovie.Synopsis = movie.Field<string>("Synopsis");
@@ -437,15 +459,22 @@ namespace Application
             //Variable Declarations.
             string sqlStatement = $"UPDATE MovieInformation SET Title = '{updatedMovie.Title}', Synopsis = '{updatedMovie.Synopsis}', ReleaseDate = '{updatedMovie.ReleaseDate}', GenreID = {updatedMovie.GenreID} WHERE MovieID = {updatedMovie.MovieID};";
 
-            //Update the existing movie information in the MovieInformation Table.
-            ExecuteSQL(sqlStatement);
-            
-            //Delete the current image from the MoviePosters table.
-            sqlStatement = $"DELETE * FROM MoviePosters WHERE MovieID = {updatedMovie.MovieID}";
-            ExecuteSQL(sqlStatement);
+            try
+            {
+                //Update the existing movie information in the MovieInformation Table.
+                ExecuteSQL(sqlStatement);
 
-            //Insert the movie poster image into the MoviePosters table.
-            AddImage(updatedMovie.MovieID, updatedMoviePoster);
+                //Delete the current image from the MoviePosters table.
+                sqlStatement = $"DELETE * FROM MoviePosters WHERE MovieID = {updatedMovie.MovieID}";
+                ExecuteSQL(sqlStatement);
+
+                //Insert the movie poster image into the MoviePosters table.
+                AddImage(updatedMovie.MovieID, updatedMoviePoster);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         #endregion

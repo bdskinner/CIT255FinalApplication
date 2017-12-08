@@ -33,16 +33,19 @@ namespace Application
         private void DeleteMovie_Load(object sender, EventArgs e)
         {
             //Variable Declarations.
-            //AccessRepository repository = new AccessRepository();
             LimelightBusiness business = new LimelightBusiness(repository);
 
             //Fill the list of movies and reviews.
-            //using (repository)
-            //{
-            //    movies = repository.GetAllMovies();
-            //}
-            movies = repository.GetAllMovies();
-
+            try
+            {
+                movies = business.GetAllMovies();
+            }
+            catch (Exception ex)
+            {
+                ApplicationUtilities.CatchExceptions(ex);
+                return;
+            }
+            
             //Fill the movie titles listbox.
             FillMovieList();
             lstMovieList.SelectedIndex = -1;
@@ -97,26 +100,33 @@ namespace Application
 
             //Display the movie information on the form.
             DisplayMovieInfo();
+
+            //Enable the delete button.
+            btnDeleteMovie.Enabled = true;
         }
 
         #endregion
 
         #region METHODS
 
+        /// <summary>
+        /// Deletes the selected movie from the database.
+        /// </summary>
         private void DeleteAMovie()
         {
             //Variable Declarations.
-            //AccessRepository repository = new AccessRepository();
             LimelightBusiness business = new LimelightBusiness(repository);
-
-            //Delete the selected movie.
-            //using (repository)
-            //{
-            //    repository.DeleteAMovie((int)lstMovieList.SelectedValue);
-            //}
-            business.DeleteMovie((int)lstMovieList.SelectedValue);
-
-
+            
+            try
+            {
+                //Delete the selected movie.
+                business.DeleteMovie((int)lstMovieList.SelectedValue);
+            }
+            catch (Exception ex)
+            {
+                //Handle the exception.
+                ApplicationUtilities.CatchExceptions(ex);
+            }
         }
 
         /// <summary>
@@ -146,14 +156,20 @@ namespace Application
         {
             //Variable Declarations.
             DataSet movieTitles;
-
-            //AccessRepository repository = new AccessRepository();
             LimelightBusiness business = new LimelightBusiness(repository);
 
             //Get the movie titles from the database.
-            //movieTitles = repository.GetAllMovieTitles();
-            movieTitles = business.GetAllMovieTitles();
-
+            try
+            {
+                movieTitles = business.GetAllMovieTitles();
+            }
+            catch (Exception ex)
+            {
+                ApplicationUtilities.CatchExceptions(ex);
+                return;
+            }
+            
+            //Fill the movie listbox with the movie titles.
             lstMovieList.DataSource = movieTitles.Tables[0];
             lstMovieList.ValueMember = "MovieID";
             lstMovieList.DisplayMember = "Title";
@@ -166,6 +182,7 @@ namespace Application
         {
             pbMoviePoster.Image = null;
             lblMovieTitle.Text = "";
+            btnDeleteMovie.Enabled = false;
         }
 
         #endregion

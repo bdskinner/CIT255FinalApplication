@@ -124,7 +124,7 @@
             this.txtMovieTitle.Location = new System.Drawing.Point(465, 98);
             this.txtMovieTitle.Name = "txtMovieTitle";
             this.txtMovieTitle.Size = new System.Drawing.Size(214, 20);
-            this.txtMovieTitle.TabIndex = 20;
+            this.txtMovieTitle.TabIndex = 0;
             // 
             // txtMovieSynopsis
             // 
@@ -132,14 +132,14 @@
             this.txtMovieSynopsis.Multiline = true;
             this.txtMovieSynopsis.Name = "txtMovieSynopsis";
             this.txtMovieSynopsis.Size = new System.Drawing.Size(310, 144);
-            this.txtMovieSynopsis.TabIndex = 21;
+            this.txtMovieSynopsis.TabIndex = 1;
             // 
             // btnChoosePoster
             // 
             this.btnChoosePoster.Location = new System.Drawing.Point(482, 381);
             this.btnChoosePoster.Name = "btnChoosePoster";
             this.btnChoosePoster.Size = new System.Drawing.Size(129, 30);
-            this.btnChoosePoster.TabIndex = 24;
+            this.btnChoosePoster.TabIndex = 4;
             this.btnChoosePoster.Text = "Choose Image";
             this.btnChoosePoster.UseVisualStyleBackColor = true;
             this.btnChoosePoster.Click += new System.EventHandler(this.btnChoosePoster_Click);
@@ -150,7 +150,7 @@
             this.btnSaveMovie.Location = new System.Drawing.Point(131, 455);
             this.btnSaveMovie.Name = "btnSaveMovie";
             this.btnSaveMovie.Size = new System.Drawing.Size(169, 47);
-            this.btnSaveMovie.TabIndex = 25;
+            this.btnSaveMovie.TabIndex = 5;
             this.btnSaveMovie.Text = "Save Movie";
             this.btnSaveMovie.UseVisualStyleBackColor = true;
             this.btnSaveMovie.Click += new System.EventHandler(this.btnSaveMovie_Click);
@@ -161,7 +161,7 @@
             this.btnResetForm.Location = new System.Drawing.Point(328, 455);
             this.btnResetForm.Name = "btnResetForm";
             this.btnResetForm.Size = new System.Drawing.Size(169, 47);
-            this.btnResetForm.TabIndex = 26;
+            this.btnResetForm.TabIndex = 6;
             this.btnResetForm.Text = "Reset Form";
             this.btnResetForm.UseVisualStyleBackColor = true;
             this.btnResetForm.Click += new System.EventHandler(this.btnResetForm_Click);
@@ -172,7 +172,7 @@
             this.btnMainMenu.Location = new System.Drawing.Point(525, 455);
             this.btnMainMenu.Name = "btnMainMenu";
             this.btnMainMenu.Size = new System.Drawing.Size(169, 47);
-            this.btnMainMenu.TabIndex = 27;
+            this.btnMainMenu.TabIndex = 7;
             this.btnMainMenu.Text = "Main Menu";
             this.btnMainMenu.UseVisualStyleBackColor = true;
             this.btnMainMenu.Click += new System.EventHandler(this.btnMainMenu_Click);
@@ -183,7 +183,7 @@
             this.cmbGenre.Location = new System.Drawing.Point(455, 342);
             this.cmbGenre.Name = "cmbGenre";
             this.cmbGenre.Size = new System.Drawing.Size(219, 21);
-            this.cmbGenre.TabIndex = 28;
+            this.cmbGenre.TabIndex = 3;
             // 
             // dtpReleaseDate
             // 
@@ -192,13 +192,14 @@
             this.dtpReleaseDate.Location = new System.Drawing.Point(455, 314);
             this.dtpReleaseDate.Name = "dtpReleaseDate";
             this.dtpReleaseDate.Size = new System.Drawing.Size(218, 20);
-            this.dtpReleaseDate.TabIndex = 29;
+            this.dtpReleaseDate.TabIndex = 2;
             // 
             // AddMovie
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(825, 536);
+            this.ControlBox = false;
             this.Controls.Add(this.dtpReleaseDate);
             this.Controls.Add(this.cmbGenre);
             this.Controls.Add(this.btnMainMenu);

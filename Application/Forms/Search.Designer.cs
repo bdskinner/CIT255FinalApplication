@@ -40,12 +40,9 @@
             this.chkSortGenre = new System.Windows.Forms.CheckBox();
             this.chkSortTitle = new System.Windows.Forms.CheckBox();
             this.chkSortReleaseDate = new System.Windows.Forms.CheckBox();
-            this.chkSortRating = new System.Windows.Forms.CheckBox();
             this.cmbGenre = new System.Windows.Forms.ComboBox();
-            this.cmbRating = new System.Windows.Forms.ComboBox();
             this.chkSearchTitle = new System.Windows.Forms.CheckBox();
             this.chkSearchGenre = new System.Windows.Forms.CheckBox();
-            this.chkSearchRating = new System.Windows.Forms.CheckBox();
             this.chkSearchReleaseDate = new System.Windows.Forms.CheckBox();
             this.dtpSearchDateFrom = new System.Windows.Forms.DateTimePicker();
             this.label5 = new System.Windows.Forms.Label();
@@ -153,6 +150,7 @@
             this.chkSortGenre.TabIndex = 51;
             this.chkSortGenre.Text = "Genre";
             this.chkSortGenre.UseVisualStyleBackColor = true;
+            this.chkSortGenre.CheckedChanged += new System.EventHandler(this.chkSortGenre_CheckedChanged);
             // 
             // chkSortTitle
             // 
@@ -164,6 +162,7 @@
             this.chkSortTitle.TabIndex = 48;
             this.chkSortTitle.Text = "Title:";
             this.chkSortTitle.UseVisualStyleBackColor = true;
+            this.chkSortTitle.CheckedChanged += new System.EventHandler(this.chkSortTitle_CheckedChanged);
             // 
             // chkSortReleaseDate
             // 
@@ -175,17 +174,7 @@
             this.chkSortReleaseDate.TabIndex = 53;
             this.chkSortReleaseDate.Text = "Release Date";
             this.chkSortReleaseDate.UseVisualStyleBackColor = true;
-            // 
-            // chkSortRating
-            // 
-            this.chkSortRating.AutoSize = true;
-            this.chkSortRating.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.chkSortRating.Location = new System.Drawing.Point(521, 429);
-            this.chkSortRating.Name = "chkSortRating";
-            this.chkSortRating.Size = new System.Drawing.Size(81, 25);
-            this.chkSortRating.TabIndex = 52;
-            this.chkSortRating.Text = "Rating";
-            this.chkSortRating.UseVisualStyleBackColor = true;
+            this.chkSortReleaseDate.CheckedChanged += new System.EventHandler(this.chkSortReleaseDate_CheckedChanged);
             // 
             // cmbGenre
             // 
@@ -196,16 +185,6 @@
             this.cmbGenre.Name = "cmbGenre";
             this.cmbGenre.Size = new System.Drawing.Size(111, 21);
             this.cmbGenre.TabIndex = 59;
-            // 
-            // cmbRating
-            // 
-            this.cmbRating.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbRating.Enabled = false;
-            this.cmbRating.FormattingEnabled = true;
-            this.cmbRating.Location = new System.Drawing.Point(417, 312);
-            this.cmbRating.Name = "cmbRating";
-            this.cmbRating.Size = new System.Drawing.Size(111, 21);
-            this.cmbRating.TabIndex = 60;
             // 
             // chkSearchTitle
             // 
@@ -230,18 +209,6 @@
             this.chkSearchGenre.Text = "Genre";
             this.chkSearchGenre.UseVisualStyleBackColor = true;
             this.chkSearchGenre.CheckedChanged += new System.EventHandler(this.chkSearchGenre_CheckedChanged);
-            // 
-            // chkSearchRating
-            // 
-            this.chkSearchRating.AutoSize = true;
-            this.chkSearchRating.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.chkSearchRating.Location = new System.Drawing.Point(330, 308);
-            this.chkSearchRating.Name = "chkSearchRating";
-            this.chkSearchRating.Size = new System.Drawing.Size(81, 25);
-            this.chkSearchRating.TabIndex = 63;
-            this.chkSearchRating.Text = "Rating";
-            this.chkSearchRating.UseVisualStyleBackColor = true;
-            this.chkSearchRating.CheckedChanged += new System.EventHandler(this.chkSearchRating_CheckedChanged);
             // 
             // chkSearchReleaseDate
             // 
@@ -300,18 +267,16 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(810, 569);
+            this.ControlBox = false;
             this.Controls.Add(this.dtpSearchDateTo);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.dtpSearchDateFrom);
             this.Controls.Add(this.chkSearchReleaseDate);
-            this.Controls.Add(this.chkSearchRating);
             this.Controls.Add(this.chkSearchGenre);
             this.Controls.Add(this.chkSearchTitle);
-            this.Controls.Add(this.cmbRating);
             this.Controls.Add(this.cmbGenre);
             this.Controls.Add(this.chkSortReleaseDate);
-            this.Controls.Add(this.chkSortRating);
             this.Controls.Add(this.chkSortGenre);
             this.Controls.Add(this.chkSortTitle);
             this.Controls.Add(this.txtSearchTitle);
@@ -345,12 +310,9 @@
         private System.Windows.Forms.CheckBox chkSortGenre;
         private System.Windows.Forms.CheckBox chkSortTitle;
         private System.Windows.Forms.CheckBox chkSortReleaseDate;
-        private System.Windows.Forms.CheckBox chkSortRating;
         private System.Windows.Forms.ComboBox cmbGenre;
-        private System.Windows.Forms.ComboBox cmbRating;
         private System.Windows.Forms.CheckBox chkSearchTitle;
         private System.Windows.Forms.CheckBox chkSearchGenre;
-        private System.Windows.Forms.CheckBox chkSearchRating;
         private System.Windows.Forms.CheckBox chkSearchReleaseDate;
         private System.Windows.Forms.DateTimePicker dtpSearchDateFrom;
         private System.Windows.Forms.Label label5;

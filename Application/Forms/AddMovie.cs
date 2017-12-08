@@ -46,6 +46,9 @@ namespace Application
             //  Site Name: stackoverflow.com
             //  URL: http://stackoverflow.com/questions/24449988/how-to-get-file-path-from-openfiledialog-and-folderbrowserdialog
 
+            //Variable Declarations.
+            string imagePath = "";
+
             //Create and display an open file dialog box.
             //OpenFileDialog choofdlog = new OpenFileDialog();
             //choofdlog.Filter = "Image Files | *.jpg; *.png; *.bmp";
@@ -58,8 +61,22 @@ namespace Application
 
             //    pbMoviePoster.ImageLocation = choofdlog.FileName;
             //}
+            
+            //pbMoviePoster.ImageLocation = ApplicationUtilities.ChooseImageFile();
 
-            pbMoviePoster.ImageLocation = ApplicationUtilities.ChooseImageFile();
+            try
+            {
+                //pbMoviePoster.ImageLocation = ApplicationUtilities.ChooseImageFile();
+                imagePath = ApplicationUtilities.ChooseImageFile();
+                if (imagePath != "")
+                {
+                    pbMoviePoster.ImageLocation = imagePath;
+                }
+            }
+            catch (Exception ex)
+            {
+                ApplicationUtilities.CatchExceptions(ex);
+            }
         }
 
         private void btnMainMenu_Click(object sender, EventArgs e)
@@ -74,51 +91,19 @@ namespace Application
 
         private void btnSaveMovie_Click(object sender, EventArgs e)
         {
-            ////Variable Declarations.
-            //Movie newMovie = new Movie();
-            ////AccessRepository repository = new AccessRepository();
-            //LimelightBusiness business = new LimelightBusiness(repository);
+            try
+            {
+                //Save the new movie to the data source.
+                AddNewMovie();
 
-            ////Take the image from the picture box and store in a byte array.
-            //MemoryStream ms = new MemoryStream();
-            //pbMoviePoster.Image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
-            //byte[] moviePoster = ms.GetBuffer();
-
-            ////Set the information entered by the user into a movie object.
-            //newMovie.Title = txtMovieTitle.Text;
-            //newMovie.Synopsis = txtMovieSynopsis.Text;
-            //newMovie.ReleaseDate = dtpReleaseDate.Value;
-            //newMovie.GenreID = (int)cmbGenre.SelectedValue;
-
-            ////Insert the new movie information into the database.
-            ////using (repository)
-            ////{
-            ////    repository.InsertNewMovie(newMovie, moviePoster);
-            ////}
-
-
-            //try
-            //{
-            //    //Insert the new movie information into the database.
-            //    business.AddMovie(newMovie, moviePoster);
-
-            //    //Tell the user the information was added successfully.
-            //    MessageBox.Show("The Information has been Added Successfully!!");
-
-            //    //Reset the form.
-            //    ResetForm();
-            //}
-            //catch (Exception ex)
-            //{
-            //    //Handle an exceptions thrown.
-            //    ApplicationUtilities.CatchExceptions(ex);
-            //}
-
-            //Save the new movie to the data source.
-            AddNewMovie();
-
-            //Reset the form.
-            ResetForm();
+                //Reset the form.
+                ResetForm();
+            }
+            catch (Exception ex)
+            {
+                //Handle the exception.
+                ApplicationUtilities.CatchExceptions(ex);
+            }
         }
 
         #endregion
@@ -132,16 +117,19 @@ namespace Application
         {
             //Variable Declarations.
             DataSet movieGenres;
-            //AccessRepository repository = new AccessRepository();
             LimelightBusiness business = new LimelightBusiness(repository);
 
             //Get the genre titles from the database.
-            //using (repository)
-            //{
-            //    movieGenres = repository.GetAllGenreTitles();
-            //}
-            movieGenres = business.GetAllGenreTitles();
-
+            try
+            {
+                movieGenres = business.GetAllGenreTitles();
+            }
+            catch (Exception ex)
+            {
+                ApplicationUtilities.CatchExceptions(ex);
+                return;
+            }
+            
             //Add the genre titles to the genre combobox.
             DataRow emptyDataRow = movieGenres.Tables[0].NewRow();
             emptyDataRow[0] = 0;
@@ -168,11 +156,13 @@ namespace Application
             txtMovieTitle.Focus();
         }
 
+        /// <summary>
+        /// Adds the information about the new movie to the database.
+        /// </summary>
         private void AddNewMovie()
         {
             //Variable Declarations.
             Movie newMovie = new Movie();
-            //AccessRepository repository = new AccessRepository();
             LimelightBusiness business = new LimelightBusiness(repository);
 
             //Take the image from the picture box and store in a byte array.
@@ -187,12 +177,6 @@ namespace Application
             newMovie.GenreID = (int)cmbGenre.SelectedValue;
 
             //Insert the new movie information into the database.
-            //using (repository)
-            //{
-            //    repository.InsertNewMovie(newMovie, moviePoster);
-            //}
-
-
             try
             {
                 //Insert the new movie information into the database.
@@ -204,7 +188,7 @@ namespace Application
             catch (Exception ex)
             {
                 //Handle an exceptions thrown.
-                ApplicationUtilities.CatchExceptions(ex);
+                throw ex;
             }
         }
         

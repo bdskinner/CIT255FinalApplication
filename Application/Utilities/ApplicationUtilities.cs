@@ -68,6 +68,24 @@ namespace Application
                 MessageBox.Show(exc.Message.ToString());
                 return;
             }
+            else if (exc is DeletedRowInaccessibleException)
+            {
+                //Display the error message on the screen.
+                MessageBox.Show(exc.Message.ToString());
+                return;
+            }
+            else if (exc is NoNullAllowedException)
+            {
+                //Display the error message on the screen.
+                MessageBox.Show(exc.Message.ToString());
+                return;
+            }
+            else if (exc is ReadOnlyException)
+            {
+                //Display the error message on the screen.
+                MessageBox.Show(exc.Message.ToString());
+                return;
+            }
             else if (exc is Exception)
             {
                 //Display the error message on the screen.
@@ -93,95 +111,22 @@ namespace Application
             //Get the path of the file selected.
             if (choofdlog.ShowDialog() == DialogResult.OK)
             {
-                //label1.Text = choofdlog.FileName;
-                //pbMoviePoster.Image = choofdlog.FileName;
-
-                //pbMoviePoster.ImageLocation = choofdlog.FileName;
-                return choofdlog.FileName;
+                //Check the file type of the file selected.
+                if (choofdlog.FileName.Substring(choofdlog.FileName.Length - 4) != "jpeg" && choofdlog.FileName.Substring(choofdlog.FileName.Length - 3) != "jpg" && choofdlog.FileName.Substring(choofdlog.FileName.Length - 3) != "png" && choofdlog.FileName.Substring(choofdlog.FileName.Length - 3) != "bmp")
+                {
+                    //If an image file was not selected throw an error.
+                    throw new ArgumentException("The file selected for the movie poster image must be an image file (.jpg, .png. or .bmp).");
+                }
+                else
+                {
+                    //If an image file was selected return the path.
+                    return choofdlog.FileName;
+                }
             }
 
-            return "";
+            return choofdlog.FileName; 
         }
-
-        /// <summary>
-        /// Fills a winforms control (listbox, combobox) with the genres from the database.
-        /// </summary>
-        /// <returns>Control: The control that has been filled with the genres.</returns>
-        public static Control FillGenreList()
-        {
-            //Variable Declarations.
-            ComboBox genreControl = new ComboBox();
-            DataSet movieGenres;
-
-            AccessRepository repository = new AccessRepository();
-
-            //Get the genre titles from the database.
-            using (repository)
-            {
-                movieGenres = repository.GetAllGenreTitles();
-            }
-
-            //Add the genre titles to the genre combobox.
-            DataRow emptyDataRow = movieGenres.Tables[0].NewRow();
-            emptyDataRow[0] = 0;
-            emptyDataRow[1] = "Select A Genre";
-            movieGenres.Tables[0].Rows.InsertAt(emptyDataRow, 0);
-
-            genreControl.DataSource = movieGenres.Tables[0];
-            genreControl.ValueMember = "GenreID";
-            genreControl.DisplayMember = "GenreTitle";
-
-            //Return the filled control.
-            return genreControl;
-        }
-
-        public static Control FillMovieList()
-        {
-            //Variable Declarations.
-            ListBox movieListControl = new ListBox();
-            DataSet movieTitles;
-
-            AccessRepository repository = new AccessRepository();
-
-            //Get the movie titles from the database.
-            movieTitles = repository.GetAllMovieTitles();
-
-            movieListControl.DataSource = movieTitles.Tables[0];
-            movieListControl.ValueMember = "MovieID";
-            movieListControl.DisplayMember = "Title";
-
-            //Return the control.
-            return movieListControl;
-        }
-
-        public static Control FillRatingsList()
-        {
-            //Variable Declarations.
-            DataSet movieRatings;
-            ComboBox ratingsControl = new ComboBox();
-            AccessRepository repository = new AccessRepository();
-
-            //Get the movie titles from the database.
-            using (repository)
-            {
-                movieRatings = repository.GetAllRatingTitles();
-            }
-
-            //Add the genre titles to the ratings combobox.
-            DataRow emptyDataRow = movieRatings.Tables[0].NewRow();
-            emptyDataRow[0] = 0;
-            emptyDataRow[1] = "Select A Rating";
-            movieRatings.Tables[0].Rows.InsertAt(emptyDataRow, 0);
-
-
-            ratingsControl.DataSource = movieRatings.Tables[0];
-            ratingsControl.ValueMember = "RatingID";
-            ratingsControl.DisplayMember = "RatingTitle";
-
-            //Return the control.
-            return ratingsControl;
-        }
-
+        
         #endregion
     }
 }

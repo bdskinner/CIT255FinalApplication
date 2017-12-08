@@ -44,12 +44,22 @@ namespace Application
         private void btnResetForm_Click(object sender, EventArgs e)
         {
             ResetForm();
+            lstMovieList.SelectedIndex = -1;
         }
 
         private void btnUpdateMovie_Click(object sender, EventArgs e)
         {
-            //Update the movie information.
-            UpdateMovieInfo();
+            try
+            {
+                //Update the movie information.
+                UpdateMovieInfo();
+            }
+            catch (Exception ex)
+            {
+                //Handle an exceptions thrown.
+                ApplicationUtilities.CatchExceptions(ex);
+                return;
+            }
 
             //Fill the movie titles listbox.
             FillMovieList();
@@ -66,21 +76,27 @@ namespace Application
 
             //Display the movie information on the form.
             DisplayMovieInfo();
+
+            //Enable the update movie button.
+            btnUpdateMovie.Enabled = true;
         }
 
         private void UpdateMovie_Load(object sender, EventArgs e)
         {
             //Variable Declarations.
-            //AccessRepository repository = new AccessRepository();
             LimelightBusiness business = new LimelightBusiness(repository);
 
             //Fill the list of movies and reviews.
-            //using (repository)
-            //{
-            //    movies = repository.GetAllMovies();
-            //}
-            movies = business.GetAllMovies();
-
+            try
+            {
+                movies = business.GetAllMovies();
+            }
+            catch (Exception ex)
+            {
+                ApplicationUtilities.CatchExceptions(ex);
+                return;
+            }
+            
             //Fill the movie titles listbox.
             FillMovieList();
             lstMovieList.SelectedIndex = -1;
@@ -127,16 +143,19 @@ namespace Application
         {
             //Variable Declarations.
             DataSet movieGenres;
-            //AccessRepository repository = new AccessRepository();
             LimelightBusiness business = new LimelightBusiness(repository);
 
             //Get the genre titles from the database.
-            //using (repository)
-            //{
-            //    movieGenres = repository.GetAllGenreTitles();
-            //}
-            movieGenres = business.GetAllGenreTitles();
-
+            try
+            {
+                movieGenres = business.GetAllGenreTitles();
+            }
+            catch (Exception ex)
+            {
+                ApplicationUtilities.CatchExceptions(ex);
+                return;
+            }
+            
             //Add the genre titles to the genre combobox.
             DataRow emptyDataRow = movieGenres.Tables[0].NewRow();
             emptyDataRow[0] = 0;
@@ -181,6 +200,7 @@ namespace Application
             txtMovieSynopsis.Text = "";
             dtpReleaseDate.Value = DateTime.Now;
             cmbGenre.SelectedIndex = 0;
+            btnUpdateMovie.Enabled = false;
         }
 
         /// <summary>
@@ -212,12 +232,6 @@ namespace Application
                     byte[] moviePoster = ms.GetBuffer();
 
                     //Update the movie info.
-                    //using (repository)
-                    //{
-                    //    repository.UpdateMovieInfo(movie, moviePoster);
-                    //}
-                    //business.UpdateMovie(movie, moviePoster);
-
                     try
                     {
                         //Insert the new movie information into the database.
@@ -228,16 +242,12 @@ namespace Application
                     }
                     catch (Exception ex)
                     {
-                        //Handle an exceptions thrown.
-                        ApplicationUtilities.CatchExceptions(ex);
+                        throw ex;
                     }
 
                     break;
                 }
             }
-            
-            //Tell the user the information has ben updated successfully.
-            //MessageBox.Show("The information has been updated successsfully.");
         }
         
         #endregion

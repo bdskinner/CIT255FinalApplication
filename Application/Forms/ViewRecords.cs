@@ -50,48 +50,11 @@ namespace Application
 
         private void lstMovieList_Click(object sender, EventArgs e)
         {
-            //Variable Declarations.
-            //AccessRepository repository = new AccessRepository();
-            //Bitmap moviePoster = new Bitmap(repository.GetImageByID(2));
-
-            //Display the movie poster on the form.
-            //pbMoviePoster.Image = moviePoster;   //new Bitmap(repository.GetImageByID(1));
-
             //Display the information about the movie on the form.
             ResetForm();
 
             //Display the movie information on the form.
             DisplayMovieInfo();
-            /*
-            foreach (Movie movie in movies)
-            {
-                //Check the movie object with the matching MovieID.
-                if (movie.MovieID == (int)lstMovieList.SelectedValue)
-                {
-                    //Add the movie information to the form.
-                    pbMoviePoster.Image = movie.MoviePoster;
-                    lblTitle.Text = movie.Title;
-                    txtSynopsis.Text = movie.Synopsis;
-                    lblReleaseDate.Text = movie.ReleaseDate.ToString();
-                    lblGenre.Text = movie.GenreID.ToString();
-
-                    //Display the movie rating and comments (if any) in the Ratings listview.
-                    foreach (Review review in movie.Reviews)
-                    {
-                        string[] row = { review.RatingTitle, review.ReviewText };
-                        var listViewItem = new ListViewItem(row);
-                        lstvwReview.Items.Add(listViewItem);
-                    }
-
-                    break;
-                }                
-            }
-            */
-
-            //Display the reviews/ratings in the ratings listview.
-            //string[] row = { "OK", "This is my comment" };
-            //var listViewItem = new ListViewItem(row);
-            //lstvwReview.Items.Add(listViewItem);
         }
 
         private void ViewRecords_Load(object sender, EventArgs e)
@@ -258,7 +221,7 @@ namespace Application
             cmbRating.SelectedIndex = 0;
             txtComment.Text = "";
         }
-        
+
         #endregion
     }
 }

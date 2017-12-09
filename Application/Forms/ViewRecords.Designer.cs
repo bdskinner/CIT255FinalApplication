@@ -175,9 +175,9 @@
             this.label7.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label7.Location = new System.Drawing.Point(33, 437);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(68, 21);
+            this.label7.Size = new System.Drawing.Size(73, 21);
             this.label7.TabIndex = 14;
-            this.label7.Text = "Ratings";
+            this.label7.Text = "Reviews";
             // 
             // label10
             // 
@@ -185,9 +185,9 @@
             this.label10.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label10.Location = new System.Drawing.Point(34, 575);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(122, 21);
+            this.label10.Size = new System.Drawing.Size(127, 21);
             this.label10.TabIndex = 16;
-            this.label10.Text = "Enter a Rating";
+            this.label10.Text = "Enter a Review";
             // 
             // label11
             // 
@@ -279,7 +279,7 @@
             // Comment
             // 
             this.Comment.Text = "Comment";
-            this.Comment.Width = 200;
+            this.Comment.Width = 320;
             // 
             // lblReleaseDate
             // 

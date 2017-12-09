@@ -260,7 +260,6 @@ namespace Application
                 case "":
                 case "Select A Genre":
                     throw new ArgumentException("A genre must be chosen to use the genre as a search criteria.");
-                    break;
                 default:
                     break;
             }

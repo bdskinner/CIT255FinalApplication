@@ -41,21 +41,28 @@ namespace Application
         {
             //Code Found at Site: Stack overflow
             //URL: https://stackoverflow.com/questions/15273617/c-sharp-insert-picture-into-ms-access
-            
-            //Variable Declarations.
-            OleDbConnection dbConnection;
-            dbConnection = ConnectToDatabase();
-            
-            //Setup the database command object to insert the image.
-            OleDbCommand cmd = new OleDbCommand("INSERT INTO MoviePosters (MovieID, MoviePoster) VALUES (@p1, @p2)", dbConnection);
-            cmd.CommandType = CommandType.Text;
-            cmd.Parameters.AddWithValue("@p1", movieID);
-            cmd.Parameters.AddWithValue("@p2", Image);
-            
-            //Execute the sql statement.
-            cmd.Connection.Open();
-            cmd.ExecuteNonQuery();
-            cmd.Connection.Close();
+
+            try
+            {
+                //Variable Declarations.
+                OleDbConnection dbConnection;
+                dbConnection = ConnectToDatabase();
+
+                //Setup the database command object to insert the image.
+                OleDbCommand cmd = new OleDbCommand("INSERT INTO MoviePosters (MovieID, MoviePoster) VALUES (@p1, @p2)", dbConnection);
+                cmd.CommandType = CommandType.Text;
+                cmd.Parameters.AddWithValue("@p1", movieID);
+                cmd.Parameters.AddWithValue("@p2", Image);
+
+                //Execute the sql statement.
+                cmd.Connection.Open();
+                cmd.ExecuteNonQuery();
+                cmd.Connection.Close();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         /// <summary>
@@ -69,11 +76,18 @@ namespace Application
             int newMovieIDValue = 0;
             string sqlStatement = $"INSERT INTO MovieInformation ( Title, Synopsis, ReleaseDate, GenreID ) VALUES ( '{newMovie.Title}', '{newMovie.Synopsis}', '{newMovie.ReleaseDate}', {newMovie.GenreID} );";
 
-            //Insert the new movie information into the MovieInformation Table.
-            newMovieIDValue = ExecuteSQLGetIDValue(sqlStatement);
+            try
+            {
+                //Insert the new movie information into the MovieInformation Table.
+                newMovieIDValue = ExecuteSQLGetIDValue(sqlStatement);
 
-            //Insert the movie poster image into the MoviePosters table.
-            AddImage(newMovieIDValue, newMoviePoster);
+                //Insert the movie poster image into the MoviePosters table.
+                AddImage(newMovieIDValue, newMoviePoster);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         /// <summary>
@@ -84,12 +98,19 @@ namespace Application
         /// <param name="reviewText"></param>
         public void AddRating(int ratingID, int movieID, string reviewText)
         {
-            //Insert the new review into the MovieReviews table.
-            ExecuteSQL($"INSERT INTO MovieReviews ( ReviewText, RatingID, MovieID ) VALUES ( '{reviewText}', {ratingID}, {movieID});");
+            try
+            {
+                //Insert the new review into the MovieReviews table.
+                ExecuteSQL($"INSERT INTO MovieReviews ( ReviewText, RatingID, MovieID ) VALUES ( '{reviewText}', {ratingID}, {movieID});");
 
-            //Refresh the list of movies.
-            _reviews = ReadAllReviews();
-            _movies = ReadAllMovies();
+                //Refresh the list of movies.
+                _reviews = ReadAllReviews();
+                _movies = ReadAllMovies();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         /// <summary>
@@ -98,12 +119,18 @@ namespace Application
         /// <returns>OleDbConnection: Returns a connection to an OleDb database.</returns>
         private static OleDbConnection ConnectToDatabase()
         {
-            //Variable Declarations.            
-            //OleDbConnection sqlServerCnct = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0; Data Source=C:\\Users\\Ben\\Documents\\CSharp Projects\\DatabaseInfo\\DatabaseInfo.accdb;");
-            OleDbConnection databaseCnct = new OleDbConnection(_dbConnectionString);
+            try
+            {
+                //Variable Declarations.  
+                OleDbConnection databaseCnct = new OleDbConnection(_dbConnectionString);
 
-            //Return the connection object.
-            return databaseCnct;
+                //Return the connection object.
+                return databaseCnct;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         /// <summary>
@@ -153,10 +180,17 @@ namespace Application
             dbConnection = ConnectToDatabase();
             command = new OleDbCommand(sqlstatement, dbConnection);
 
-            //Execute the sql statement.
-            dbConnection.Open();
-            command.ExecuteNonQuery();
-            dbConnection.Close();
+            try
+            {
+                //Execute the sql statement.
+                dbConnection.Open();
+                command.ExecuteNonQuery();
+                dbConnection.Close();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         /// <summary>
@@ -176,30 +210,24 @@ namespace Application
             int ID;
             string getIDValueQuery = "Select @@Identity";
 
+            try
+            {
+                //Create a connection to the database.
+                dbConnection = ConnectToDatabase();
+                command = new OleDbCommand(sqlStatement, dbConnection);
 
-
-            //Create a connection to the database.
-            dbConnection = ConnectToDatabase();
-            command = new OleDbCommand(sqlStatement, dbConnection);
-
-            //using (OleDbCommand cmd = new OleDbCommand(sqlStatement, dbConnection))
-
-            //    {
-            //        cmd.Parameters.AddWithValue("", Category.Text);
-            //        dbConnection.Open();
-            //        cmd.ExecuteNonQuery();
-            //        cmd.CommandText = query2;
-            //        ID = (int)cmd.ExecuteScalar();
-
-            //    }
-
-            //Execute the sql statement.
-            dbConnection.Open();
-            command.ExecuteNonQuery();
-            command.CommandText = getIDValueQuery;
-            ID = (int)command.ExecuteScalar();
-            dbConnection.Close();
-
+                //Execute the sql statement.
+                dbConnection.Open();
+                command.ExecuteNonQuery();
+                command.CommandText = getIDValueQuery;
+                ID = (int)command.ExecuteScalar();
+                dbConnection.Close();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            
             //Return the ID value for the record just inserted.
             return ID;
         }
@@ -246,9 +274,16 @@ namespace Application
             //Variable Declarations.
             DataSet movieTitles = new DataSet();
 
-            //Get all movie titles in the database.
-            movieTitles = GetSQLResults("SELECT MovieID, Title FROM MovieInformation ORDER BY Title");
-
+            try
+            {
+                //Get all movie titles in the database.
+                movieTitles = GetSQLResults("SELECT MovieID, Title FROM MovieInformation ORDER BY Title");
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            
             //Return the results.
             return movieTitles;
         }
@@ -288,9 +323,16 @@ namespace Application
             MemoryStream ms = null;
             DataSet results = null;
 
-            //Retrieve the movie poster image.
-            results = GetSQLResults($"SELECT MoviePoster FROM MoviePosters WHERE MovieID = {movieID}");
-
+            try
+            {
+                //Retrieve the movie poster image.
+                results = GetSQLResults($"SELECT MoviePoster FROM MoviePosters WHERE MovieID = {movieID}");
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            
             //Store the image in a memorystream.
             if (results.Tables[0].Rows.Count > 0)
             {
@@ -311,9 +353,16 @@ namespace Application
             //Variable Declarations.
             DataSet movieTitles = new DataSet();
 
-            //Get all movie titles in the database.
-            movieTitles = GetSQLResults($"SELECT * FROM MovieInformation WHERE MovieID = {movieID}");
-
+            try
+            {
+                //Get all movie titles in the database.
+                movieTitles = GetSQLResults($"SELECT * FROM MovieInformation WHERE MovieID = {movieID}");
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            
             //Return the results.
             return movieTitles;
         }
@@ -351,19 +400,26 @@ namespace Application
             OleDbConnection dbConnection = new OleDbConnection();
             DataSet dbObjects = new DataSet();
 
-            //Create a connection to the database.
-            dbConnection = ConnectToDatabase();
+            try
+            {
+                //Create a connection to the database.
+                dbConnection = ConnectToDatabase();
 
-            //Open the database connection.
-            dbConnection.Open();
+                //Open the database connection.
+                dbConnection.Open();
 
-            //Fill the dataset with the results from the database.
-            OleDbDataAdapter adapter = new OleDbDataAdapter(sqlStatement, dbConnection);
-            adapter.Fill(dbObjects);
+                //Fill the dataset with the results from the database.
+                OleDbDataAdapter adapter = new OleDbDataAdapter(sqlStatement, dbConnection);
+                adapter.Fill(dbObjects);
 
-            //Close the database connection.
-            dbConnection.Close();
-
+                //Close the database connection.
+                dbConnection.Close();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            
             //Return the results.
             return dbObjects;
         }
@@ -378,32 +434,37 @@ namespace Application
             DataSet moviesDS = new DataSet();
             List<Movie> movies = new List<Movie>();
 
-            //Get all movie titles in the database.
-            //moviesDS = GetSQLResults("SELECT * FROM MovieInformation ORDER BY Title");
-            moviesDS = GetSQLResults("SELECT MovieInformation.MovieID, MovieInformation.Title, MovieInformation.Synopsis, MovieInformation.ReleaseDate, MovieInformation.GenreID, Genres.GenreTitle FROM MovieInformation INNER JOIN Genres ON MovieInformation.GenreID = Genres.GenreID;");
-            
-            //Loop through the dataset and add a movie object to the list of movies.
-            foreach (DataRow movie in moviesDS.Tables[0].Rows)
+            try
             {
-                //Create a new movie object.
-                Movie newMovie = new Movie();
+                //Get all movie titles in the database.
+                moviesDS = GetSQLResults("SELECT MovieInformation.MovieID, MovieInformation.Title, MovieInformation.Synopsis, MovieInformation.ReleaseDate, MovieInformation.GenreID, Genres.GenreTitle FROM MovieInformation INNER JOIN Genres ON MovieInformation.GenreID = Genres.GenreID;");
 
-                //Save the movie information to the new movie object.
-                newMovie.MovieID = movie.Field<int>("MovieID");
-                newMovie.Title = movie.Field<string>("Title");
-                newMovie.Synopsis = movie.Field<string>("Synopsis");
-                newMovie.ReleaseDate = movie.Field<DateTime>("ReleaseDate");
-                newMovie.GenreID = movie.Field<int>("GenreID");
-                newMovie.GenreTitle = movie.Field<string>("GenreTitle");
-                newMovie.Reviews = GetReviewsByMovieID(newMovie.MovieID);
-                newMovie.MoviePoster = new Bitmap(GetImageByID(newMovie.MovieID));
+                //Loop through the dataset and add a movie object to the list of movies.
+                foreach (DataRow movie in moviesDS.Tables[0].Rows)
+                {
+                    //Create a new movie object.
+                    Movie newMovie = new Movie();
 
-                //Add the new movie object to the movie list.
-                movies.Add(newMovie);
+                    //Save the movie information to the new movie object.
+                    newMovie.MovieID = movie.Field<int>("MovieID");
+                    newMovie.Title = movie.Field<string>("Title");
+                    newMovie.Synopsis = movie.Field<string>("Synopsis");
+                    newMovie.ReleaseDate = movie.Field<DateTime>("ReleaseDate");
+                    newMovie.GenreID = movie.Field<int>("GenreID");
+                    newMovie.GenreTitle = movie.Field<string>("GenreTitle");
+                    newMovie.Reviews = GetReviewsByMovieID(newMovie.MovieID);
+                    newMovie.MoviePoster = new Bitmap(GetImageByID(newMovie.MovieID));
 
-                newMovie = null;
+                    //Add the new movie object to the movie list.
+                    movies.Add(newMovie);
+
+                    newMovie = null;
+                }
             }
-
+            catch (Exception ex)
+            {
+                throw ex;
+            }
             moviesDS.Dispose();
             
             //Return the results.
@@ -420,30 +481,37 @@ namespace Application
             DataSet reviewsDS = new DataSet();
             List<Review> reviews = new List<Review>();
 
-            //Get all movie titles in the database.
-            reviewsDS = GetSQLResults("SELECT MovieReviews.ReviewID, MovieReviews.ReviewerFName, MovieReviews.ReviewerLName, MovieReviews.ReviewText, MovieReviews.RatingID, MovieReviews.MovieID, Ratings.RatingTitle FROM MovieReviews INNER JOIN Ratings ON MovieReviews.RatingID = Ratings.RatingID;");
-
-            //Loop through the dataset and add a movie object to the list of movies.
-            foreach (DataRow review in reviewsDS.Tables[0].Rows)
+            try
             {
-                //Create a new movie object.
-                Review newReview = new Review();
+                //Get all movie titles in the database.
+                reviewsDS = GetSQLResults("SELECT MovieReviews.ReviewID, MovieReviews.ReviewerFName, MovieReviews.ReviewerLName, MovieReviews.ReviewText, MovieReviews.RatingID, MovieReviews.MovieID, Ratings.RatingTitle FROM MovieReviews INNER JOIN Ratings ON MovieReviews.RatingID = Ratings.RatingID;");
 
-                //Save the review information to the new review object.
-                newReview.ReviewID = review.Field<int>("ReviewID");
-                newReview.ReviewerFName = review.Field<string>("ReviewerFName");
-                newReview.ReviewerLName = review.Field<string>("ReviewerLName");
-                newReview.ReviewText = review.Field<string>("ReviewText");
-                newReview.RatingID = review.Field<int>("RatingID");
-                newReview.MovieID = review.Field<int>("MovieID");
-                newReview.RatingTitle = review.Field<string>("RatingTitle");
+                //Loop through the dataset and add a movie object to the list of movies.
+                foreach (DataRow review in reviewsDS.Tables[0].Rows)
+                {
+                    //Create a new movie object.
+                    Review newReview = new Review();
 
-                //Add the new movie object to the list of reviews.
-                reviews.Add(newReview);
+                    //Save the review information to the new review object.
+                    newReview.ReviewID = review.Field<int>("ReviewID");
+                    newReview.ReviewerFName = review.Field<string>("ReviewerFName");
+                    newReview.ReviewerLName = review.Field<string>("ReviewerLName");
+                    newReview.ReviewText = review.Field<string>("ReviewText");
+                    newReview.RatingID = review.Field<int>("RatingID");
+                    newReview.MovieID = review.Field<int>("MovieID");
+                    newReview.RatingTitle = review.Field<string>("RatingTitle");
 
-                newReview = null;
+                    //Add the new movie object to the list of reviews.
+                    reviews.Add(newReview);
+
+                    newReview = null;
+                }
             }
-
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            
             reviewsDS.Dispose();
 
             //Return the results.

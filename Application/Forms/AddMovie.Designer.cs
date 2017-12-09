@@ -179,6 +179,7 @@
             // 
             // cmbGenre
             // 
+            this.cmbGenre.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbGenre.FormattingEnabled = true;
             this.cmbGenre.Location = new System.Drawing.Point(455, 342);
             this.cmbGenre.Name = "cmbGenre";

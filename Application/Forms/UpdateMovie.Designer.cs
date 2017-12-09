@@ -181,6 +181,7 @@
             // 
             // cmbGenre
             // 
+            this.cmbGenre.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbGenre.FormattingEnabled = true;
             this.cmbGenre.ItemHeight = 13;
             this.cmbGenre.Location = new System.Drawing.Point(571, 369);

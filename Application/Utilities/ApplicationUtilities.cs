@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data;
+using System.Data.OleDb;
 using System.Drawing;
 using System.IO;
 
@@ -74,13 +75,19 @@ namespace Application
                 MessageBox.Show(exc.Message.ToString());
                 return;
             }
-            else if (exc is NoNullAllowedException)
+            else if (exc is OleDbException)
             {
                 //Display the error message on the screen.
                 MessageBox.Show(exc.Message.ToString());
                 return;
             }
             else if (exc is ReadOnlyException)
+            {
+                //Display the error message on the screen.
+                MessageBox.Show(exc.Message.ToString());
+                return;
+            }
+            else if (exc is RowNotInTableException)
             {
                 //Display the error message on the screen.
                 MessageBox.Show(exc.Message.ToString());
